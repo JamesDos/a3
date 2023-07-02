@@ -44,7 +44,7 @@ public class LinkedSeq<T> implements Seq<T> {
             assert tail != null;
 
             // generate a temporary node to reference head node
-            Node tempNode = new  Node(tail.data(),head);
+            Node tempNode = new  Node(head.data(),head.next());
             // counter to track position of node
             int counter = 0;
             // loop that count number of node that has data
