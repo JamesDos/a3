@@ -43,10 +43,27 @@ public class LinkedSeq<T> implements Seq<T> {
             assert head != null;
             assert tail != null;
 
+            // generate a temporary node to reference head node
+            Node tempNode = new  Node(tail.data(),head);
+            // counter to track position of node
+            int counter = 0;
+            // loop that count number of node that has data
+            while(tempNode.data() != null){
+                counter++;
+                // set the next node in the list
+                tempNode = tempNode.next();
+                // check for end of list
+                if (tempNode == tail){
+                    break;
+                }
+            }
+            assert counter == this.size;
+            //System.out.println(size + "\t" + counter);
+        }
+
             // TODO 0: check that the number of linked nodes is equal to this list's size and that
             // the last linked node is the same object as `tail`.
         }
-    }
 
     /**
      * Create an empty list.
