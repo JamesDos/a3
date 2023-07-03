@@ -44,21 +44,19 @@ public class LinkedSeq<T> implements Seq<T> {
             assert tail != null;
 
             // generate a temporary node to reference head node
-            Node tempNode = new  Node(head.data(),head.next());
+            Node current = head;
             // counter to track position of node
-            int counter = 0;
+            // !!!!! INDEX START AT 1 !!!!!
+            int counter = 1;
             // loop that count number of node that has data
-            while(tempNode.data() != null){
+            while(current != tail){
                 counter++;
                 // set the next node in the list
-                tempNode = tempNode.next();
-                // check for end of list
-                if (tempNode == tail){
-                    break;
-                }
+                current = current.next();
             }
+            System.out.println(size + "\t" + counter);
             assert counter == this.size;
-            //System.out.println(size + "\t" + counter);
+
         }
 
             // TODO 0: check that the number of linked nodes is equal to this list's size and that
@@ -113,6 +111,11 @@ public class LinkedSeq<T> implements Seq<T> {
         String str = "[";
         // TODO 1: Complete the implementation of this method according to its specification.
         // Unit tests have already been provided (you do not need to add additional cases).
+        Node current = head;
+        while (current != null){
+            str += (current==head)? current.data(): ", " + current.data();
+            current = current.next();
+        }
         str += "]";
         return str;
     }
