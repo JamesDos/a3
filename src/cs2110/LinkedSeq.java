@@ -2,6 +2,7 @@ package cs2110;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import javax.swing.plaf.IconUIResource;
 
 /*
  * Assignment metadata
@@ -42,25 +43,22 @@ public class LinkedSeq<T> implements Seq<T> {
         } else {
             assert head != null;
             assert tail != null;
-
-            // generate a temporary node to reference head node
-            Node current = head;
-            // counter to track position of node
-            // !!!!! INDEX START AT 1 !!!!!
-            int counter = 1;
-            // loop that count number of node that has data
-            while(current != tail){
-                counter++;
-                // set the next node in the list
-                current = current.next();
-            }
-            System.out.println(size + "\t" + counter);
-            assert counter == this.size;
-
         }
-
             // TODO 0: check that the number of linked nodes is equal to this list's size and that
             // the last linked node is the same object as `tail`.
+
+        // generate a temporary node to reference head node
+        Node current = head;
+        // counter to track position of node
+        int counter = 0;
+        // loop that count number of node that has data
+        while(current != null){
+            counter++;
+            // set the next node in the list
+            current = current.next();
+        }
+        System.out.println(size + "\t" + counter);
+        assert counter == this.size;
         }
 
     /**
@@ -125,7 +123,16 @@ public class LinkedSeq<T> implements Seq<T> {
         // TODO 2: Write unit tests for this method, then implement it according to its
         // specification.  Tests must check for `elem` in a list that does not contain `elem`, in a
         // list that contains it once, and in a list that contains it more than once.
-        throw new UnsupportedOperationException();
+        //throw new UnsupportedOperationException();
+        Node current = head;
+        assert elem != null;
+        while (current != null){
+            if(current.data() == elem){
+                return true;
+            }
+            current = current.next();
+        }
+        return false;
     }
 
     @Override
