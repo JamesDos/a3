@@ -109,7 +109,7 @@ public class LinkedSeq<T> implements Seq<T> {
         String str = "[";
         // TODO 1: Complete the implementation of this method according to its specification.
         // Unit tests have already been provided (you do not need to add additional cases).
-        Node current = head;
+        Node<T> current = head;
         while (current != null){
             str += (current==head)? current.data(): ", " + current.data();
             current = current.next();
@@ -125,7 +125,7 @@ public class LinkedSeq<T> implements Seq<T> {
         // list that contains it once, and in a list that contains it more than once.
         //throw new UnsupportedOperationException();
         assert elem != null;
-        Node current = head;
+        Node<T> current = head;
         while (current != null){
             if(current.data().equals(elem)){
                 return true;
@@ -141,11 +141,11 @@ public class LinkedSeq<T> implements Seq<T> {
         // specification.  Tests must get elements from at least three different indices.
         //throw new UnsupportedOperationException();
         assert this.size >= index;
-        Node current = head;
+        Node<T> current = head;
         for(int i = 0; i < index; i ++){
             current = current.next();
         }
-        return (T) current.data();
+        return current.data();
     }
 
     @Override
@@ -153,7 +153,17 @@ public class LinkedSeq<T> implements Seq<T> {
         // TODO 4: Write unit tests for this method, then implement it according to its
         // specification.  Tests must append to lists of at least three different sizes.
         // Implementation constraint: efficiency must not depend on the size of the list.
-        throw new UnsupportedOperationException();
+        // throw new UnsupportedOperationException();
+        assert elem != null;
+        Node<T> newTail = new Node<>(elem, null);
+        if(size == 0){
+            head = newTail;
+        } else{
+            tail.setNext(newTail);
+        }
+        tail = newTail;
+        size++;
+        assertInv();
     }
 
     @Override
@@ -163,7 +173,21 @@ public class LinkedSeq<T> implements Seq<T> {
         // TODO 5: Write unit tests for this method, then implement it according to its
         // specification.  Tests must insert into lists where `successor` is in at least three
         // different positions.
-        throw new UnsupportedOperationException();
+        // throw new UnsupportedOperationException();
+        assert contains(successor);
+        if (successor.equals(head)){
+            prepend(elem);
+        } else{
+            Node<T> insertedNode = new Node<>(elem, null);
+            Node<T> current = head;
+            while (!current.next().data().equals(successor)){
+                current = current.next();
+            }
+            current.setNext(insertedNode);
+            insertedNode.setNext((Node<T>)successor);
+        }
+        size++;
+        assertInv();
     }
 
     @Override

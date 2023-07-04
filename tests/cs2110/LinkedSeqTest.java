@@ -137,12 +137,130 @@ class LinkedSeqTest {
         Seq<String> list = makeList3();
         // Gets elem at index = 0 (head of list)
         assertEquals("A", list.get(0));
-        // Gets elem at 0 <index < size (middle of list)
+        // Gets elem at 0 < index < size (middle of list)
         assertEquals("B", list.get(1));
         // Gets elem at index = size (tail of list)
         assertEquals("C", list.get(2));
     }
 
+    @Test
+    void testAppend(){
+        // Append to empty list
+        Seq<String> list = makeList0();
+        assertEquals("[]", list.toString());
+        assertEquals(0, list.size());
+        assertFalse(list.contains("X"));
+        list.append("X");
+        assertEquals("[X]", list.toString());
+        assertEquals(1, list.size());
+        assertTrue(list.contains("X"));
+
+        // Append to list of length 1
+        list = makeList1();
+        assertEquals("[A]", list.toString());
+        assertEquals(1, list.size());
+        assertFalse(list.contains("X"));
+        list.append("X");
+        assertEquals("[A, X]", list.toString());
+        assertEquals(2, list.size());
+        assertTrue(list.contains("X"));
+
+        // Append to list of length 2
+        list = makeList2();
+        assertEquals("[A, B]", list.toString());
+        assertEquals(2, list.size());
+        assertFalse(list.contains("X"));
+        list.append("X");
+        assertEquals("[A, B, X]", list.toString());
+        assertEquals(3, list.size());
+        assertTrue(list.contains("X"));
+
+        // Append to list of length greater than 2
+        list = makeList3();
+        assertEquals("[A, B, C]", list.toString());
+        assertFalse(list.contains("X"));
+        assertEquals(3, list.size());
+        list.append("X");
+        assertEquals("[A, B, C, X]", list.toString());
+        assertEquals(4, list.size());
+        assertTrue(list.contains("X"));
+
+        // Appending multiple times to the same list
+        assertFalse(list.contains("Y"));
+        list.append("Y");
+        assertEquals("[A, B, C, X, Y]", list.toString());
+        assertEquals(5, list.size());
+        assertTrue(list.contains("Y"));
+    }
+
+    @Test
+    void testInsertBefore(){
+        // List of length > 2
+        Seq<String> list = makeList3();
+        // Successor is the head of list
+        assertEquals("[A, B, C]", list.toString());
+        assertFalse(list.contains("X"));
+        assertEquals(3, list.size());
+        list.insertBefore("X", "A");
+        assertEquals("[X, A, B, C]", list.toString());
+        assertEquals(4, list.size());
+        assertTrue(list.contains("X"));
+
+        // Successor is the tail of the list
+        assertFalse(list.contains("Y"));
+        list.insertBefore("Y", "C");
+        assertEquals("[X, A, B, Y, C]", list.toString());
+        assertEquals(5, list.size());
+        assertTrue(list.contains("Y"));
+
+        // Successor is in the middle of the list
+        assertFalse(list.contains("Z"));
+        list.insertBefore("Z", "B");
+        assertEquals("[X, A, Z, B, Y, C]", list.toString());
+        assertEquals(6, list.size());
+        assertTrue(list.contains("Z"));
+
+        // List of length 1
+        list = makeList1();
+        // Successor is both head and tail
+        assertEquals("[A]", list.toString());
+        assertFalse(list.contains("X"));
+        assertEquals(1, list.size());
+        list.insertBefore("A", "X");
+        assertEquals("[X, A]", list.toString());
+        assertEquals(2, list.size());
+        assertTrue(list.contains("X"));
+
+        // List of length 2
+        list = makeList2();
+        // Successor is head
+        assertEquals("[A, B]", list.toString());
+        assertFalse(list.contains("X"));
+        assertEquals(2, list.size());
+        list.insertBefore("A", "X");
+        assertEquals("[X, A, B]", list.toString());
+        assertEquals(3, list.size());
+        assertTrue(list.contains("X"));
+
+        // Successor is tail
+        assertFalse(list.contains("Y"));
+        list.insertBefore("B", "Y");
+        assertEquals("[X, A, Y, B]", list.toString());
+        assertEquals(4, list.size());
+        assertTrue(list.contains("Y"));
+
+        // Insert element that has the same data as successor
+        list.insertBefore("B", "B");
+        assertEquals("[X, A, Y, B, B]", list.toString());
+        assertEquals(5, list.size());
+        assertTrue(list.contains("B"));
+
+        // Successor is in multiple positions
+        // list.insertBefore("B", "Z");
+        // assertEquals("[X, A, Y, Z, B, B]", list.toString());
+        // assertEquals(6, list.size());
+        // assertTrue(list.contains("Z"));
+    }
 
 
     /*
