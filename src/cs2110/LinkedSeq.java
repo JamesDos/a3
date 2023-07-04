@@ -124,10 +124,10 @@ public class LinkedSeq<T> implements Seq<T> {
         // specification.  Tests must check for `elem` in a list that does not contain `elem`, in a
         // list that contains it once, and in a list that contains it more than once.
         //throw new UnsupportedOperationException();
-        Node current = head;
         assert elem != null;
+        Node current = head;
         while (current != null){
-            if(current.data() == elem){
+            if(current.data().equals(elem)){
                 return true;
             }
             current = current.next();
@@ -142,7 +142,7 @@ public class LinkedSeq<T> implements Seq<T> {
         //throw new UnsupportedOperationException();
         assert this.size >= index;
         Node current = head;
-        for(int i = 0;i < index; i ++){
+        for(int i = 0; i < index; i ++){
             current = current.next();
         }
         return (T) current.data();

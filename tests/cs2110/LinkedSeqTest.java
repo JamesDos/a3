@@ -104,6 +104,45 @@ class LinkedSeqTest {
     // expected `toString()` output in order to check multiple aspects of the state at once (in
     // general, later tests may make use of methods that have previously been tested).
 
+    @Test
+    void testContains(){
+        // Basic Testcases
+        // Elem in a list that does not contain elem; list is non-empty
+        Seq<String> list = makeList3();
+        assertFalse(list.contains("D"));
+        // Elem in a list that does contain elem; elem in middle of list
+        assertTrue(list.contains("B"));
+        // Elem in a list that contains multiple instances of elem; both instances in middle
+        list.append("B");
+        list.append("D");
+        assertTrue(list.contains("B"));
+
+        // Edge Cases
+        // Elem in a list that does not contain elem; list is empty
+        list = makeList0();
+        assertFalse(list.contains("A"));
+        // Elem in a list that does contain elem; elem is head
+        list = makeList3();
+        assertTrue(list.contains("A"));
+        // Elem in a list that does contain elem; elem is tail
+        list = makeList3();
+        assertTrue(list.contains("C"));
+        // Elem in a list that contains multiple instances of elem; elem is head and tail
+        list.append("A");
+        assertTrue(list.contains("A"));
+    }
+
+    @Test
+    void testGet(){
+        Seq<String> list = makeList3();
+        // Gets elem at index = 0 (head of list)
+        assertEquals("A", list.get(0));
+        // Gets elem at 0 <index < size (middle of list)
+        assertEquals("B", list.get(1));
+        // Gets elem at index = size (tail of list)
+        assertEquals("C", list.get(2));
+    }
+
 
 
     /*
