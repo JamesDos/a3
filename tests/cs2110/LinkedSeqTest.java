@@ -277,7 +277,7 @@ class LinkedSeqTest {
         assertEquals(3, list.size());
         assertFalse(list.contains("X"));
 
-        // Remove elem from a list that contains it once
+        // Remove elem from a list that contains it once (elem is head)
         assertEquals("[A, B, C]", list.toString());
         assertTrue(list.contains("A"));
         assertEquals(3, list.size());
@@ -318,7 +318,7 @@ class LinkedSeqTest {
         assertEquals(1, list.size());
         assertFalse(list.contains("X"));
 
-        // Remove elem from list that does contain elem
+        // Remove elem from list that does contain elem (elem is head and tail)
         assertTrue(list.remove("A"));
         assertEquals("[]", list.toString());
         assertEquals(0, list.size());
@@ -336,7 +336,7 @@ class LinkedSeqTest {
         assertEquals(2, list.size());
         assertFalse(list.contains("X"));
 
-        // Remove elem from list that does contain elem
+        // Remove elem from list that does contain elem (elem is tail)
         assertTrue(list.remove("B"));
         assertEquals("[A]", list.toString());
         assertEquals(1, list.size());
@@ -347,6 +347,82 @@ class LinkedSeqTest {
         assertEquals("[]", list.toString());
         assertEquals(0, list.size());
         assertFalse(list.contains("A"));
+    }
+
+    @Test
+    void testEquals(){
+        // Compare empty Lists
+        Seq<String> list1 = makeList0();
+        Seq<String> list2 = makeList0();
+        assertTrue(list1.equals(list2));
+        assertTrue(list2.equals(list1));
+
+        // Compare lists of length 1
+        list1 = makeList1();
+        list2 = makeList1();
+        // Lists are the same
+        assertTrue(list1.equals(list2));
+        assertTrue(list2.equals(list1));
+        // Lists are different
+        list1 = new LinkedSeq<>();
+        list1.append("B");
+        assertFalse(list1.equals(list2));
+        assertFalse(list2.equals(list1));
+
+        // Compare lists of length 2
+        list1 = makeList2();
+        list2 = makeList2();
+        // Lists are the same
+        assertTrue(list1.equals(list2));
+        assertTrue(list2.equals(list1));
+        // Lists are different
+        list1.remove("A");
+        list1.prepend("X");
+        assertFalse(list1.equals(list2));
+        assertFalse(list2.equals(list1));
+
+        // Compare lists of length > 2
+        list1 = makeList3();
+        list2 = makeList3();
+        // Lists are the same
+        assertTrue(list1.equals(list2));
+        assertTrue(list2.equals(list1));
+
+        // Lists are different (Don't have the same elements)
+        list1.remove("C");
+        list1.append("X");
+        assertFalse(list1.equals(list2));
+        assertFalse(list2.equals(list1));
+
+        // Lists are different; lists have the same elements in different order
+        list1 = makeList3();
+        list2 = makeList3();
+        list2.remove("C");
+        list2.prepend("C");
+        assertFalse(list1.equals(list2));
+        assertFalse(list2.equals(list1));
+
+
+        // Compare lists of different length
+        list1 = new LinkedSeq<>();
+        list1.append("X");
+        list2 = new LinkedSeq<>();
+        list2.append("Y");
+        list2.append("Z");
+        assertFalse(list1.equals(list2));
+        assertFalse(list2.equals(list1));
+
+        // One list contains the other
+        list1 = makeList2();
+        list2 = makeList3();
+        assertFalse(list1.equals(list2));
+        assertFalse(list2.equals(list1));
+
+        // One list is empty, the other isn't
+        list1 = makeList0();
+        list2 = makeList2();
+        assertFalse(list1.equals(list2));
+        assertFalse(list2.equals(list1));
     }
 
 
