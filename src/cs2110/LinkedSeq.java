@@ -1,5 +1,6 @@
 package cs2110;
 
+import com.sun.source.tree.WhileLoopTree;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import javax.swing.plaf.IconUIResource;
@@ -48,7 +49,7 @@ public class LinkedSeq<T> implements Seq<T> {
             // the last linked node is the same object as `tail`.
 
         // generate a temporary node to reference head node
-        Node current = head;
+        Node<T> current = head;
         // counter to track position of node
         int counter = 0;
         // loop that count number of node that has data
@@ -138,7 +139,7 @@ public class LinkedSeq<T> implements Seq<T> {
     public T get(int index) {
         // TODO 3: Write unit tests for this method, then implement it according to its
         // specification.  Tests must get elements from at least three different indices.
-        //throw new UnsupportedOperationException();
+        // throw new UnsupportedOperationException();
         assert this.size >= index;
         Node<T> current = head;
         for(int i = 0; i < index; i ++){
@@ -252,7 +253,22 @@ public class LinkedSeq<T> implements Seq<T> {
 
         // TODO 7: Write unit tests for this method, then finish implementing it according to its
         // specification.  Tests must compare at least three different pairs of lists.
-        throw new UnsupportedOperationException();
+        // throw new UnsupportedOperationException();
+
+        // test for mismatch element size
+        if (otherSeq.size() != this.size){
+            return false;
+        }
+        // cycle through each element in currNodeThis and compare using Object.equals()
+        // to currNodeOther
+        while(currNodeThis != null){
+            if(!currNodeThis.data().equals(currNodeOther.data())){
+                return false;
+            }
+            currNodeThis = currNodeThis.next();
+            currNodeOther = currNodeOther.next();
+        }
+        return true;
     }
 
     /*
