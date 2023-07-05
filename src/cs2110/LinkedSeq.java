@@ -57,7 +57,6 @@ public class LinkedSeq<T> implements Seq<T> {
             // set the next node in the list
             current = current.next();
         }
-        System.out.println(size + "\t" + counter);
         assert counter == this.size;
         }
 
@@ -177,7 +176,7 @@ public class LinkedSeq<T> implements Seq<T> {
         assert elem != null;
         assert successor != null;
         assert contains(successor);
-        System.out.println("Before" + size());
+
         if (successor.equals(head.data())){
             prepend(elem);
         } else{
@@ -189,7 +188,6 @@ public class LinkedSeq<T> implements Seq<T> {
             current.setNext(insertedNode);
             size++;
         }
-        System.out.println("After" + size());
         assertInv();
     }
 
@@ -198,7 +196,38 @@ public class LinkedSeq<T> implements Seq<T> {
         // TODO 6: Write unit tests for this method, then implement it according to its
         // specification.  Tests must remove `elem` from a list that does not contain `elem`, from a
         // list that contains it once, and from a list that contains it more than once.
-        throw new UnsupportedOperationException();
+        // throw new UnsupportedOperationException();
+        assert elem != null;
+
+        if (!contains(elem)){
+            assertInv();
+            return false;
+        } else{
+            // removing head
+            if(elem.equals(head.data())){
+                if(size == 1){
+                    head = null;
+                    tail = null;
+                } else{
+                    head = head.next();
+                }
+            } else{
+                Node<T> current = head;
+                while (!current.next().data().equals(elem)){
+                    current = current.next();
+                }
+                // removing tail
+                if (current.next().equals(tail)) {
+                    current.setNext(null);
+                    tail = current;
+                } else {
+                    current.setNext(current.next().next());
+                }
+            }
+            size -= 1;
+            assertInv();
+            return true;
+        }
     }
 
     /**

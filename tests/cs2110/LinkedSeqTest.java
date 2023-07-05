@@ -262,6 +262,93 @@ class LinkedSeqTest {
         assertTrue(list.contains("Z"));
     }
 
+    @Test
+    void testRemove(){
+        // List of length > 2
+        Seq<String> list = makeList3();
+
+        // Remove elem from a list that does not contain elem
+        assertEquals("[A, B, C]", list.toString());
+        assertFalse(list.contains("X"));
+        assertEquals(3, list.size());
+        // list.remove removes elem and returns boolean
+        assertFalse(list.remove("X"));
+        assertEquals("[A, B, C]", list.toString());
+        assertEquals(3, list.size());
+        assertFalse(list.contains("X"));
+
+        // Remove elem from a list that contains it once
+        assertEquals("[A, B, C]", list.toString());
+        assertTrue(list.contains("A"));
+        assertEquals(3, list.size());
+        assertTrue(list.remove("A"));
+        assertEquals("[B, C]", list.toString());
+        assertEquals(2, list.size());
+        assertFalse(list.contains("A"));
+
+        // Remove elem from a list that contains elem multiple times
+        list.append("C");
+        list.prepend("C");
+        assertEquals("[C, B, C, C]", list.toString());
+        assertTrue(list.contains("C"));
+        assertEquals(4, list.size());
+        assertTrue(list.remove("C"));
+        assertEquals("[B, C, C]", list.toString());
+        assertEquals(3, list.size());
+        assertTrue(list.contains("C"));
+
+        // Empty List
+        list = makeList0();
+        assertEquals("[]", list.toString());
+        assertFalse(list.contains("X"));
+        assertEquals(0, list.size());
+        assertFalse(list.remove("X"));
+        assertEquals("[]", list.toString());
+        assertEquals(0, list.size());
+        assertFalse(list.contains("X"));
+
+        // List of length 1
+        // Remove elem from list that does not contain elem
+        list = makeList1();
+        assertEquals("[A]", list.toString());
+        assertFalse(list.contains("X"));
+        assertEquals(1, list.size());
+        assertFalse(list.remove("X"));
+        assertEquals("[A]", list.toString());
+        assertEquals(1, list.size());
+        assertFalse(list.contains("X"));
+
+        // Remove elem from list that does contain elem
+        assertTrue(list.remove("A"));
+        assertEquals("[]", list.toString());
+        assertEquals(0, list.size());
+        assertFalse(list.contains("A"));
+
+        // List of length 2
+        list = makeList2();
+
+        // Remove elem from list that does not contain elem
+        assertEquals("[A, B]", list.toString());
+        assertFalse(list.contains("X"));
+        assertEquals(2, list.size());
+        assertFalse(list.remove("X"));
+        assertEquals("[A, B]", list.toString());
+        assertEquals(2, list.size());
+        assertFalse(list.contains("X"));
+
+        // Remove elem from list that does contain elem
+        assertTrue(list.remove("B"));
+        assertEquals("[A]", list.toString());
+        assertEquals(1, list.size());
+        assertFalse(list.contains("B"));
+
+        // Remove multiple different items from list
+        assertTrue(list.remove("A"));
+        assertEquals("[]", list.toString());
+        assertEquals(0, list.size());
+        assertFalse(list.contains("A"));
+    }
+
 
     /*
      * There is no need to read the remainder of this file for the purpose of completing the
