@@ -174,19 +174,22 @@ public class LinkedSeq<T> implements Seq<T> {
         // specification.  Tests must insert into lists where `successor` is in at least three
         // different positions.
         // throw new UnsupportedOperationException();
+        assert elem != null;
+        assert successor != null;
         assert contains(successor);
-        if (successor.equals(head)){
+        System.out.println("Before" + size());
+        if (successor.equals(head.data())){
             prepend(elem);
         } else{
-            Node<T> insertedNode = new Node<>(elem, null);
             Node<T> current = head;
             while (!current.next().data().equals(successor)){
                 current = current.next();
             }
+            Node<T> insertedNode = new Node<>(elem, current.next());
             current.setNext(insertedNode);
-            insertedNode.setNext((Node<T>)successor);
+            size++;
         }
-        size++;
+        System.out.println("After" + size());
         assertInv();
     }
 

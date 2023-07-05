@@ -226,7 +226,7 @@ class LinkedSeqTest {
         assertEquals("[A]", list.toString());
         assertFalse(list.contains("X"));
         assertEquals(1, list.size());
-        list.insertBefore("A", "X");
+        list.insertBefore("X", "A");
         assertEquals("[X, A]", list.toString());
         assertEquals(2, list.size());
         assertTrue(list.contains("X"));
@@ -237,14 +237,14 @@ class LinkedSeqTest {
         assertEquals("[A, B]", list.toString());
         assertFalse(list.contains("X"));
         assertEquals(2, list.size());
-        list.insertBefore("A", "X");
+        list.insertBefore("X", "A");
         assertEquals("[X, A, B]", list.toString());
         assertEquals(3, list.size());
         assertTrue(list.contains("X"));
 
         // Successor is tail
         assertFalse(list.contains("Y"));
-        list.insertBefore("B", "Y");
+        list.insertBefore("Y", "B");
         assertEquals("[X, A, Y, B]", list.toString());
         assertEquals(4, list.size());
         assertTrue(list.contains("Y"));
@@ -256,10 +256,10 @@ class LinkedSeqTest {
         assertTrue(list.contains("B"));
 
         // Successor is in multiple positions
-        // list.insertBefore("B", "Z");
-        // assertEquals("[X, A, Y, Z, B, B]", list.toString());
-        // assertEquals(6, list.size());
-        // assertTrue(list.contains("Z"));
+        list.insertBefore("Z", "B");
+        assertEquals("[X, A, Y, Z, B, B]", list.toString());
+        assertEquals(6, list.size());
+        assertTrue(list.contains("Z"));
     }
 
 
