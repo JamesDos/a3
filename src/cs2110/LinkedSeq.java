@@ -140,7 +140,7 @@ public class LinkedSeq<T> implements Seq<T> {
         // TODO 3: Write unit tests for this method, then implement it according to its
         // specification.  Tests must get elements from at least three different indices.
         // throw new UnsupportedOperationException();
-        assert this.size >= index;
+        assert this.size > index;
         Node<T> current = head;
         for(int i = 0; i < index; i ++){
             current = current.next();

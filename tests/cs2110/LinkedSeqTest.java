@@ -134,6 +134,7 @@ class LinkedSeqTest {
 
     @Test
     void testGet(){
+        // List of length > 2
         Seq<String> list = makeList3();
         // Gets elem at index = 0 (head of list)
         assertEquals("A", list.get(0));
@@ -141,6 +142,14 @@ class LinkedSeqTest {
         assertEquals("B", list.get(1));
         // Gets elem at index = size (tail of list)
         assertEquals("C", list.get(2));
+        // Gets elem after it has been appended
+        list.append("D");
+        assertEquals("D", list.get(3));
+        // Gets elem after it has been prepended
+        list.prepend("Z");
+        assertEquals("Z", list.get(0));
+        // Checks if other elements are moved
+        assertEquals("A", list.get(1));
     }
 
     @Test
