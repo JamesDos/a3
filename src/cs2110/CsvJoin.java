@@ -41,18 +41,66 @@ public class CsvJoin {
      */
     public static Seq<Seq<String>> join(Seq<Seq<String>> left, Seq<Seq<String>> right){
         Seq<Seq<String>> mergedList = new LinkedSeq<>();
-        int indexThis = 0;
-        int indexOther =0;
-        Seq<String> currentRowThis = left.get(indexThis);
-        Seq<String> currentRowOther = right.get(indexOther);
-        while (!currentRowThis.equals(null)){
-            while(!currentRowOther.equals(null)){
+        // left.size() is # of rows in left table
+        for (int rowIndexLeft = 0; rowIndexLeft < left.size(); rowIndexLeft++){
+            Seq<String> mergedListRow = new LinkedSeq<>();
+            Seq<String> currentRowLeft = left.get(rowIndexLeft);
+            boolean addedOtherRow = false;
+            // Each row from left table will always appear in the final merged list
+            // CurrentRowLeft.size() is the # of columns in the current left row
+            for (int colIndexLeft = 0; colIndexLeft < currentRowLeft.size();
+                    colIndexLeft++){
+                mergedListRow.append(currentRowLeft.get(colIndexLeft));
+            }
+            // right.size() is # of rows in right table
+            for(int rowIndexRight = 0; rowIndexRight < right.size(); rowIndexRight++){
+                Seq<String> currentRowRight = right.get(rowIndexRight);
+                // if a first column of right row matches with a first column of left row
+                // add remaining elements of right row to mergedListRow
+                if(currentRowLeft.get(0).equals(currentRowRight.get(0))){
+                    // CurrentRowRight.size() is the # of columns in the current right row
+                    for (int colIndexRight = 1; colIndexRight < currentRowRight.size();
+                            colIndexRight++){
+                        mergedListRow.append(currentRowRight.get(colIndexRight));
+                        addedOtherRow = true;
+                    }
+                }
+            }
+            // None of the elements from right row were added to final mergedListRow
+            // Must fill remaining spots with empty strings
+            if (!addedOtherRow){
+                for(int i = 1; i < right.get(0).size(); i++){
+                    mergedListRow.append("");
+                }
+            }
+            mergedList.append(mergedListRow);
+        }
+        return mergedList;
+
+        /**
+        //int indexThis = 0;
+        //int indexOther = 0;
+        //Seq<String> currentRowThis = left.get(indexThis);
+        //Seq<String> currentRowOther = right.get(indexOther);
+        while (currentRowThis != null){
+            Seq<String> mergedListRow = new LinkedSeq<>();
+            // adding left row's elements to mergedList's row
+            for (int i = 0; i < currentRowThis.size(); i++){
+                mergedListRow.append(currentRowThis.get(i));
+            }
+            while(currentRowOther != null){
                 if(currentRowThis.get(0).equals(currentRowOther.get(0))){
                     // TODO parse elements into mergedList
+                    // adding right row's elements to mergedList's row
+                    for (int i = 1; i < currentRowOther.size(); i++){
+                        mergedListRow.append(currentRowOther.get(i));
+                    }
                 }
                 indexOther++;
                 currentRowOther = right.get(indexOther);
             }
+            // add mergedList row after 2nd while loop; if statement could have been skipped
+            mergedList.append(mergedListRow);
             indexThis++;
             currentRowThis = left.get(indexThis);
         }
@@ -60,7 +108,7 @@ public class CsvJoin {
 //            for(int j = 0; j < right.size();j++){
 //            }
 //        }
-        return mergedList;
+        return mergedList; */
     }
     //public static void main(String[] args){
 //File input = new File("C:\\Users\\lamle\\CS2110\\a3\\input-test\\example");}
