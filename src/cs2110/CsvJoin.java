@@ -68,17 +68,21 @@ public class CsvJoin {
         Seq<Seq<String>> mergedList = new LinkedSeq<>();
         // left.size() is # of rows in left table
         for (int rowIndexLeft = 0; rowIndexLeft < left.size(); rowIndexLeft++){
-            Seq<String> mergedListRow = new LinkedSeq<>();
+            Seq<String> mergedListRowLeft = new LinkedSeq<>();
             Seq<String> currentRowLeft = left.get(rowIndexLeft);
             boolean addedOtherRow = false;
             // Each row from left table will always appear in the final merged list
             // CurrentRowLeft.size() is the # of columns in the current left row
             for (int colIndexLeft = 0; colIndexLeft < currentRowLeft.size();
                     colIndexLeft++){
-                mergedListRow.append(currentRowLeft.get(colIndexLeft));
+                mergedListRowLeft.append(currentRowLeft.get(colIndexLeft));
             }
             // right.size() is # of rows in right table
             for(int rowIndexRight = 0; rowIndexRight < right.size(); rowIndexRight++){
+                Seq<String> mergedListRow = new LinkedSeq<>();
+                for(String s: mergedListRowLeft){
+                    mergedListRow.append(s);
+                }
                 Seq<String> currentRowRight = right.get(rowIndexRight);
                 // if a first column of right row matches with a first column of left row
                 // add remaining elements of right row to mergedListRow
@@ -96,9 +100,9 @@ public class CsvJoin {
             // Must fill remaining spots with empty strings
             if (!addedOtherRow){
                 for(int i = 1; i < right.get(0).size(); i++){
-                    mergedListRow.append("");
+                    mergedListRowLeft.append("");
                 }
-                mergedList.append(mergedListRow);
+                mergedList.append(mergedListRowLeft);
             }
         }
         assert checkRectangular((mergedList));
@@ -137,6 +141,7 @@ public class CsvJoin {
 //        }
         return mergedList; */
     }
-    //public static void main(String[] args){
-//File input = new File("C:\\Users\\lamle\\CS2110\\a3\\input-test\\example");}
+    public static void main(String[] args) throws IOException{
+        // TODO write helper method to convert sequence to csv file
+    }
 }
