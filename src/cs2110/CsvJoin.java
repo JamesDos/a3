@@ -38,6 +38,7 @@ public class CsvJoin {
      * sequence of a sequence of strings.
      */
     private static boolean checkRectangular(Seq<Seq<String>> table){
+        assert table != null;
         int nColumns = 0;
         // Looping through rows
         for(int rowIndex = 0; rowIndex < table.size(); rowIndex++){
@@ -57,37 +58,43 @@ public class CsvJoin {
     }
 
     /**
+     * Helper function that appends elements from 'otherRow' to 'thisRow'; modifies 'thisRow'
+     * Returns the sequence of strings 'thisRow' after the appending.
+     * Requires 'thisRow' and 'otherRow' to be a sequence of strings
+     */
+
+    private static Seq<String> appendToRow(Seq<String> thisRow, Seq<String> otherRow){
+        assert thisRow != null;
+        assert otherRow != null;
+        for(String s: otherRow){
+            thisRow.append(s);
+        }
+        return thisRow;
+    }
+
+    /**
      * Return the left outer join of tables `left` and `right`, joined on their first column. Result
      * will represent a rectangular table, with empty strings filling in any columns from `right`
      * when there is no match. Requires that `left` and `right` represent rectangular tables with at
      * least 1 column.
      */
     public static Seq<Seq<String>> join(Seq<Seq<String>> left, Seq<Seq<String>> right){
+        assert left != null;
+        assert right != null;
         assert checkRectangular(left);
         assert checkRectangular(right);
         Seq<Seq<String>> mergedList = new LinkedSeq<>();
-        // left.size() is # of rows in left table
-        for (int rowIndexLeft = 0; rowIndexLeft < left.size(); rowIndexLeft++){
+        for (Seq<String> currentRowLeft: left){
             Seq<String> mergedListRowLeft = new LinkedSeq<>();
-            Seq<String> currentRowLeft = left.get(rowIndexLeft);
             boolean addedOtherRow = false;
             // Each row from left table will always appear in the final merged list
-            // CurrentRowLeft.size() is the # of columns in the current left row
-            for (int colIndexLeft = 0; colIndexLeft < currentRowLeft.size();
-                    colIndexLeft++){
-                mergedListRowLeft.append(currentRowLeft.get(colIndexLeft));
-            }
-            // right.size() is # of rows in right table
-            for(int rowIndexRight = 0; rowIndexRight < right.size(); rowIndexRight++){
+            appendToRow(mergedListRowLeft, currentRowLeft);
+            for(Seq<String> currentRowRight: right){
                 Seq<String> mergedListRow = new LinkedSeq<>();
-                for(String s: mergedListRowLeft){
-                    mergedListRow.append(s);
-                }
-                Seq<String> currentRowRight = right.get(rowIndexRight);
+                appendToRow(mergedListRow, mergedListRowLeft);
                 // if a first column of right row matches with a first column of left row
                 // add remaining elements of right row to mergedListRow
                 if(currentRowLeft.get(0).equals(currentRowRight.get(0))){
-                    // CurrentRowRight.size() is the # of columns in the current right row
                     for (int colIndexRight = 1; colIndexRight < currentRowRight.size();
                             colIndexRight++){
                         mergedListRow.append(currentRowRight.get(colIndexRight));
@@ -107,39 +114,6 @@ public class CsvJoin {
         }
         assert checkRectangular((mergedList));
         return mergedList;
-
-        /**
-        //int indexThis = 0;
-        //int indexOther = 0;
-        //Seq<String> currentRowThis = left.get(indexThis);
-        //Seq<String> currentRowOther = right.get(indexOther);
-        while (currentRowThis != null){
-            Seq<String> mergedListRow = new LinkedSeq<>();
-            // adding left row's elements to mergedList's row
-            for (int i = 0; i < currentRowThis.size(); i++){
-                mergedListRow.append(currentRowThis.get(i));
-            }
-            while(currentRowOther != null){
-                if(currentRowThis.get(0).equals(currentRowOther.get(0))){
-                    // TODO parse elements into mergedList
-                    // adding right row's elements to mergedList's row
-                    for (int i = 1; i < currentRowOther.size(); i++){
-                        mergedListRow.append(currentRowOther.get(i));
-                    }
-                }
-                indexOther++;
-                currentRowOther = right.get(indexOther);
-            }
-            // add mergedList row after 2nd while loop; if statement could have been skipped
-            mergedList.append(mergedListRow);
-            indexThis++;
-            currentRowThis = left.get(indexThis);
-        }
-//        for(int i = 0; i < left.size();i++){
-//            for(int j = 0; j < right.size();j++){
-//            }
-//        }
-        return mergedList; */
     }
     public static void main(String[] args) throws IOException{
         // TODO write helper method to convert sequence to csv file
