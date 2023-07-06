@@ -115,7 +115,24 @@ public class CsvJoin {
         assert checkRectangular((mergedList));
         return mergedList;
     }
+    private static void CsvJoinHelper(String dir) throws IOException{
+        Seq<Seq<String>> left = csvToList("input-tests/" + dir + "/input1.csv");
+        Seq<Seq<String>> right = csvToList("input-tests/" + dir + "/input2.csv");
+        Seq<Seq<String>> join = join(left,right);
+        CsvFormater(join);
+    }
+
+    private static void CsvFormater(Seq<Seq<String>> a){
+        for(Seq<String> row:a){
+            String printString = "";
+            for(String s:row){
+                        printString += s + ",";
+            }
+            System.out.println(printString.substring(0,(printString.length()-1)));
+        }
+    }
     public static void main(String[] args) throws IOException{
         // TODO write helper method to convert sequence to csv file
+        CsvJoinHelper("states");
     }
 }
