@@ -10,7 +10,7 @@ public class CsvJoin {
      */
     public static Seq<Seq<String>> csvToList(String file) throws IOException{
         //TODO check for handeling of empty file (",,,," or "" file)
-        Seq<Seq<String>> matrix = new LinkedSeq<>();
+        Seq<Seq<String>> table = new LinkedSeq<>();
 
         try(Reader in = new FileReader(file)){
             Scanner lines = new Scanner(in);
@@ -28,11 +28,34 @@ public class CsvJoin {
                 row.append(word);
                 }
             // add row into columns list
-            matrix.append(row);
+            table.append(row);
             }
         }
-        return matrix;
+        return table;
     }
+    /**
+     * Helper function that returns whether a table is rectangular. Requires 'table' to be a
+     * sequence of a sequence of strings.
+     */
+    private static boolean checkRectangular(Seq<Seq<String>> table){
+        int nColumns = 0;
+        // Looping through rows
+        for(int rowIndex = 0; rowIndex < table.size(); rowIndex++){
+            // Looping through columns
+            int nColumnsThis = 0;
+            for(int colIndex = 0; colIndex < table.get(rowIndex).size(); colIndex++){
+                nColumnsThis++;
+            }
+            if (nColumns == 0){
+                nColumns = nColumnsThis;
+            }
+            if (nColumnsThis != nColumns){
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Return the left outer join of tables `left` and `right`, joined on their first column. Result
      * will represent a rectangular table, with empty strings filling in any columns from `right`
@@ -40,6 +63,8 @@ public class CsvJoin {
      * least 1 column.
      */
     public static Seq<Seq<String>> join(Seq<Seq<String>> left, Seq<Seq<String>> right){
+        assert checkRectangular(left);
+        assert checkRectangular(right);
         Seq<Seq<String>> mergedList = new LinkedSeq<>();
         // left.size() is # of rows in left table
         for (int rowIndexLeft = 0; rowIndexLeft < left.size(); rowIndexLeft++){
@@ -64,6 +89,7 @@ public class CsvJoin {
                         mergedListRow.append(currentRowRight.get(colIndexRight));
                         addedOtherRow = true;
                     }
+                    mergedList.append(mergedListRow);
                 }
             }
             // None of the elements from right row were added to final mergedListRow
@@ -72,9 +98,10 @@ public class CsvJoin {
                 for(int i = 1; i < right.get(0).size(); i++){
                     mergedListRow.append("");
                 }
+                mergedList.append(mergedListRow);
             }
-            mergedList.append(mergedListRow);
         }
+        assert checkRectangular((mergedList));
         return mergedList;
 
         /**
