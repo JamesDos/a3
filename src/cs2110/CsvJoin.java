@@ -121,15 +121,6 @@ public class CsvJoin {
      */
 
     private static void CsvJoinHelper(String dir) throws IOException {
-        Seq<Seq<String>> left = csvToList("input-tests/" + dir + "/input1.csv");
-        Seq<Seq<String>> right = csvToList("input-tests/" + dir + "/input2.csv");
-        //Seq<Seq<String>> right = csvToList("tests/testCsvToList/no-cols.csv");
-        if (!checkRectangular(left) || !checkRectangular(right)) {
-            System.err.println("Error: Input tables are not rectangular or have no columns");
-            System.exit(-1);
-        }
-        Seq<Seq<String>> mergedTable = join(left, right);
-        CsvFormatter(mergedTable);
     }
 
     /**
@@ -153,7 +144,15 @@ public class CsvJoin {
             // TODO: Maybe put code in CsvJoinHelper in main since it is not directly
             // reading from main's inputs (input 1 and 2 are hard coded)
             // Maybe can configure main to take in the path of input 1 and 2
-            CsvJoinHelper("example");
+            Seq<Seq<String>> left = csvToList(args[0]);
+            Seq<Seq<String>> right = csvToList(args[1]);
+            //Seq<Seq<String>> right = csvToList("tests/testCsvToList/no-cols.csv");
+            if (!checkRectangular(left) || !checkRectangular(right)) {
+                System.err.println("Error: Input tables are not rectangular or have no columns");
+                System.exit(-1);
+            }
+            Seq<Seq<String>> mergedTable = join(left, right);
+            CsvFormatter(mergedTable);
         } catch(java.io.IOException e){
             System.err.println("Error: Could not read input tables.");
             System.err.println(e);
