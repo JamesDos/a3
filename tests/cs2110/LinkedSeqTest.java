@@ -105,7 +105,7 @@ class LinkedSeqTest {
     // general, later tests may make use of methods that have previously been tested).
 
     @Test
-    void testContains(){
+    void testContains() {
         // Basic Testcases
         // Elem in a list that does not contain elem; list is non-empty
         Seq<String> list = makeList3();
@@ -133,7 +133,7 @@ class LinkedSeqTest {
     }
 
     @Test
-    void testGet(){
+    void testGet() {
         // List of length > 2
         Seq<String> list = makeList3();
         // Gets elem at index = 0 (head of list)
@@ -153,7 +153,7 @@ class LinkedSeqTest {
     }
 
     @Test
-    void testAppend(){
+    void testAppend() {
         // Append to empty list
         Seq<String> list = makeList0();
         assertEquals("[]", list.toString());
@@ -203,7 +203,7 @@ class LinkedSeqTest {
     }
 
     @Test
-    void testInsertBefore(){
+    void testInsertBefore() {
         // List of length > 2
         Seq<String> list = makeList3();
         // Successor is the head of list
@@ -272,7 +272,7 @@ class LinkedSeqTest {
     }
 
     @Test
-    void testRemove(){
+    void testRemove() {
         // List of length > 2
         Seq<String> list = makeList3();
 
@@ -359,7 +359,7 @@ class LinkedSeqTest {
     }
 
     @Test
-    void testEquals(){
+    void testEquals() {
         // Compare empty Lists
         Seq<String> list1 = makeList0();
         Seq<String> list2 = makeList0();
@@ -410,7 +410,6 @@ class LinkedSeqTest {
         list2.prepend("C");
         assertFalse(list1.equals(list2));
         assertFalse(list2.equals(list1));
-
 
         // Compare lists of different length
         list1 = new LinkedSeq<>();

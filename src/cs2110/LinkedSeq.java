@@ -45,21 +45,21 @@ public class LinkedSeq<T> implements Seq<T> {
             assert head != null;
             assert tail != null;
         }
-            // TODO 0: check that the number of linked nodes is equal to this list's size and that
-            // the last linked node is the same object as `tail`.
+        // TODO 0: check that the number of linked nodes is equal to this list's size and that
+        // the last linked node is the same object as `tail`.
 
         // generate a temporary node to reference head node
         Node<T> current = head;
         // counter to track position of node
         int counter = 0;
         // loop that count number of node that has data
-        while(current != null){
+        while (current != null) {
             counter++;
             // set the next node in the list
             current = current.next();
         }
         assert counter == this.size;
-        }
+    }
 
     /**
      * Create an empty list.
@@ -110,8 +110,8 @@ public class LinkedSeq<T> implements Seq<T> {
         // TODO 1: Complete the implementation of this method according to its specification.
         // Unit tests have already been provided (you do not need to add additional cases).
         Node<T> current = head;
-        while (current != null){
-            str += (current==head)? current.data(): ", " + current.data();
+        while (current != null) {
+            str += (current == head) ? current.data() : ", " + current.data();
             current = current.next();
         }
         str += "]";
@@ -126,8 +126,8 @@ public class LinkedSeq<T> implements Seq<T> {
         //throw new UnsupportedOperationException();
         assert elem != null;
         Node<T> current = head;
-        while (current != null){
-            if(current.data().equals(elem)){
+        while (current != null) {
+            if (current.data().equals(elem)) {
                 return true;
             }
             current = current.next();
@@ -142,7 +142,7 @@ public class LinkedSeq<T> implements Seq<T> {
         // throw new UnsupportedOperationException();
         assert this.size > index;
         Node<T> current = head;
-        for(int i = 0; i < index; i ++){
+        for (int i = 0; i < index; i++) {
             current = current.next();
         }
         return current.data();
@@ -156,9 +156,9 @@ public class LinkedSeq<T> implements Seq<T> {
         // throw new UnsupportedOperationException();
         assert elem != null;
         Node<T> newTail = new Node<>(elem, null);
-        if(size == 0){
+        if (size == 0) {
             head = newTail;
-        } else{
+        } else {
             tail.setNext(newTail);
         }
         tail = newTail;
@@ -178,11 +178,11 @@ public class LinkedSeq<T> implements Seq<T> {
         assert successor != null;
         assert contains(successor);
 
-        if (successor.equals(head.data())){
+        if (successor.equals(head.data())) {
             prepend(elem);
-        } else{
+        } else {
             Node<T> current = head;
-            while (!current.next().data().equals(successor)){
+            while (!current.next().data().equals(successor)) {
                 current = current.next();
             }
             Node<T> insertedNode = new Node<>(elem, current.next());
@@ -200,21 +200,21 @@ public class LinkedSeq<T> implements Seq<T> {
         // throw new UnsupportedOperationException();
         assert elem != null;
 
-        if (!contains(elem)){
+        if (!contains(elem)) {
             assertInv();
             return false;
-        } else{
+        } else {
             // removing head
-            if(elem.equals(head.data())){
-                if(size == 1){
+            if (elem.equals(head.data())) {
+                if (size == 1) {
                     head = null;
                     tail = null;
-                } else{
+                } else {
                     head = head.next();
                 }
-            } else{
+            } else {
                 Node<T> current = head;
-                while (!current.next().data().equals(elem)){
+                while (!current.next().data().equals(elem)) {
                     current = current.next();
                 }
                 // removing tail
@@ -256,13 +256,13 @@ public class LinkedSeq<T> implements Seq<T> {
         // throw new UnsupportedOperationException();
 
         // test for mismatch element size
-        if (otherSeq.size() != this.size){
+        if (otherSeq.size() != this.size) {
             return false;
         }
         // cycle through each element in currNodeThis and compare using Object.equals()
         // to currNodeOther
-        while(currNodeThis != null){
-            if(!currNodeThis.data().equals(currNodeOther.data())){
+        while (currNodeThis != null) {
+            if (!currNodeThis.data().equals(currNodeOther.data())) {
                 return false;
             }
             currNodeThis = currNodeThis.next();
