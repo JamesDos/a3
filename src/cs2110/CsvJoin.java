@@ -35,7 +35,9 @@ public class CsvJoin {
      */
     private static boolean checkRectangular(Seq<Seq<String>> table){
         assert table != null;
-        System.out.println(table);
+        if (table.size() == 0){
+            return false;
+        }
         int nColumns = table.get(0).size();
         // Looping through rows
         for(Seq<String> row: table){
@@ -106,16 +108,7 @@ public class CsvJoin {
     }
 
     /**
-     * Helper method used by main() that joins tables from "input1.csv" and "input2.csv" based
-     * on which directory, dir, they are in.
-     * Prints error if either tables are not rectangular or have no columns.
-     */
-
-    private static void CsvJoinHelper(String dir) throws IOException {
-    }
-
-    /**
-     * Helper method used by CsvJoinHelper() that prints out a table in a simplified CSV format.
+     * Helper method used by main that prints out a table in a simplified CSV format.
      * mergedTable is a table made from joining two input tables in CsvJoinHelper().
      */
 
@@ -135,9 +128,12 @@ public class CsvJoin {
             // TODO: Maybe put code in CsvJoinHelper in main since it is not directly
             // reading from main's inputs (input 1 and 2 are hard coded)
             // Maybe can configure main to take in the path of input 1 and 2
+            if (args.length != 2){
+                System.err.println("Error: must provide exactly two arguments");
+                System.exit(-1);
+            }
             Seq<Seq<String>> left = csvToList(args[0]);
             Seq<Seq<String>> right = csvToList(args[1]);
-            //Seq<Seq<String>> right = csvToList("tests/testCsvToList/no-cols.csv");
             if (!checkRectangular(left) || !checkRectangular(right)) {
                 System.err.println("Error: Input tables are not rectangular or have no columns");
                 System.exit(-1);
