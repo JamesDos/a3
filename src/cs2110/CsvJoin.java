@@ -35,24 +35,15 @@ public class CsvJoin {
      */
     private static boolean checkRectangular(Seq<Seq<String>> table){
         assert table != null;
-        int nColumns = 0;
+        System.out.println(table);
+        int nColumns = table.get(0).size();
         // Looping through rows
         for(Seq<String> row: table){
-            // Looping through columns
-            int nColumnsThis = 0;
-            for(String column: row){
-                if (!column.isEmpty()) {
-                    nColumnsThis++;
-                }
-            }
-            if (nColumns == 0){
-                nColumns = nColumnsThis;
-            }
-            if (nColumnsThis != nColumns){
+            if(row.size() != nColumns || row.size() == 0){
                 return false;
             }
         }
-        return nColumns != 0;
+        return true;
     }
 
     /**
