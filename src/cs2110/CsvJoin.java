@@ -11,25 +11,21 @@ public class CsvJoin {
     public static Seq<Seq<String>> csvToList(String file) throws IOException{
         //TODO check for handeling of empty file (",,,," or "" file)
         Seq<Seq<String>> table = new LinkedSeq<>();
-
-        try(Reader in = new FileReader(file)){
-            Scanner lines = new Scanner(in);
-
-
-            while(lines.hasNextLine()){
-            // initialize line var to reference Scanner
-            String line = lines.nextLine();
-            // initialize lineArray to reference line.split
-            String[] lineArray = line.split(",", -1);
-            // initialize row linked list to be sparse with lineArray
-            Seq<String> row = new LinkedSeq<>();
-                for(String word: lineArray){
-                // parse word into each element of Seq<String>
-                row.append(word);
-                }
-            // add row into columns list
-            table.append(row);
+        Reader in = new FileReader(file);
+        Scanner lines = new Scanner(in);
+        while(lines.hasNextLine()){
+        // initialize line var to reference Scanner
+        String line = lines.nextLine();
+        // initialize lineArray to reference line.split
+        String[] lineArray = line.split(",", -1);
+        // initialize row linked list to be sparse with lineArray
+        Seq<String> row = new LinkedSeq<>();
+            for(String word: lineArray){
+            // parse word into each element of Seq<String>
+            row.append(word);
             }
+        // add row into columns list
+        table.append(row);
         }
         return table;
     }
@@ -41,11 +37,13 @@ public class CsvJoin {
         assert table != null;
         int nColumns = 0;
         // Looping through rows
-        for(int rowIndex = 0; rowIndex < table.size(); rowIndex++){
+        for(Seq<String> row: table){
             // Looping through columns
             int nColumnsThis = 0;
-            for(int colIndex = 0; colIndex < table.get(rowIndex).size(); colIndex++){
-                nColumnsThis++;
+            for(String column: row){
+                if (!column.isEmpty()) {
+                    nColumnsThis++;
+                }
             }
             if (nColumns == 0){
                 nColumns = nColumnsThis;
@@ -54,7 +52,7 @@ public class CsvJoin {
                 return false;
             }
         }
-        return true;
+        return nColumns != 0;
     }
 
     /**
@@ -115,15 +113,32 @@ public class CsvJoin {
         assert checkRectangular((mergedList));
         return mergedList;
     }
-    private static void CsvJoinHelper(String dir) throws IOException{
+
+    /**
+     * Helper method used by main() that joins tables from "input1.csv" and "input2.csv" based
+     * on which directory, dir, they are in.
+     * Prints error if either tables are not rectangular or have no columns.
+     */
+
+    private static void CsvJoinHelper(String dir) throws IOException {
         Seq<Seq<String>> left = csvToList("input-tests/" + dir + "/input1.csv");
         Seq<Seq<String>> right = csvToList("input-tests/" + dir + "/input2.csv");
-        Seq<Seq<String>> join = join(left,right);
-        CsvFormater(join);
+        //Seq<Seq<String>> right = csvToList("tests/testCsvToList/no-cols.csv");
+        if (!checkRectangular(left) || !checkRectangular(right)) {
+            System.err.println("Error: Input tables are not rectangular or have no columns");
+            System.exit(-1);
+        }
+        Seq<Seq<String>> mergedTable = join(left, right);
+        CsvFormatter(mergedTable);
     }
 
-    private static void CsvFormater(Seq<Seq<String>> a){
-        for(Seq<String> row:a){
+    /**
+     * Helper method used by CsvJoinHelper() that prints out a table in a simplified CSV format.
+     * mergedTable is a table made from joining two input tables in CsvJoinHelper().
+     */
+
+    private static void CsvFormatter(Seq<Seq<String>> mergedTable){
+        for(Seq<String> row:mergedTable){
             String printString = "";
             for(String s:row){
                         printString += s + ",";
@@ -131,8 +146,18 @@ public class CsvJoin {
             System.out.println(printString.substring(0,(printString.length()-1)));
         }
     }
-    public static void main(String[] args) throws IOException{
-        // TODO write helper method to convert sequence to csv file
-        CsvJoinHelper("states");
+
+
+    public static void main(String[] args){
+        try{
+            // TODO: Maybe put code in CsvJoinHelper in main since it is not directly
+            // reading from main's inputs (input 1 and 2 are hard coded)
+            // Maybe can configure main to take in the path of input 1 and 2
+            CsvJoinHelper("example");
+        } catch(java.io.IOException e){
+            System.err.println("Error: Could not read input tables.");
+            System.err.println(e);
+            System.exit(-1);
+        }
     }
 }
