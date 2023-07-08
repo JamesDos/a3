@@ -49,9 +49,11 @@ class CsvJoinTest {
 
         testJoinHelper("states");
 
-        testJoinHelper("bballPlayer");
+        testJoinHelper("bballPlayers");
 
         testJoinHelper("Pokemon");
+
+        testJoinHelper("car");
 
         // TODO: Run at least two of your own input-tests here
     }
