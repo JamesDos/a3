@@ -7,8 +7,8 @@ import javax.swing.plaf.IconUIResource;
 
 /*
  * Assignment metadata
- * Name(s) and NetID(s): TODO (TODO)
- * Hours spent on assignment: TODO
+ * Name(s) and NetID(s): Lam Le ldl56 James Tu jt737
+ * Hours spent on assignment: 12
  */
 
 /**

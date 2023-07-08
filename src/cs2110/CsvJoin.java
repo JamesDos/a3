@@ -9,23 +9,22 @@ public class CsvJoin {
      * there is a problem reading the file.
      */
     public static Seq<Seq<String>> csvToList(String file) throws IOException{
-        //TODO check for handeling of empty file (",,,," or "" file)
         Seq<Seq<String>> table = new LinkedSeq<>();
         Reader in = new FileReader(file);
         Scanner lines = new Scanner(in);
         while(lines.hasNextLine()){
-        // initialize line var to reference Scanner
-        String line = lines.nextLine();
-        // initialize lineArray to reference line.split
-        String[] lineArray = line.split(",", -1);
-        // initialize row linked list to be sparse with lineArray
-        Seq<String> row = new LinkedSeq<>();
+            // initialize line var to reference Scanner
+            String line = lines.nextLine();
+            // initialize lineArray to reference line.split
+            String[] lineArray = line.split(",", -1);
+            // initialize row linked list to be sparse with lineArray
+            Seq<String> row = new LinkedSeq<>();
             for(String word: lineArray){
-            // parse word into each element of Seq<String>
-            row.append(word);
+                // parse word into each element of Seq<String>
+                row.append(word);
             }
-        // add row into columns list
-        table.append(row);
+            // add row into columns list
+            table.append(row);
         }
         return table;
     }
@@ -35,7 +34,9 @@ public class CsvJoin {
      */
     private static boolean checkRectangular(Seq<Seq<String>> table){
         assert table != null;
-        System.out.println(table);
+        if (table.size() == 0){
+            return false;
+        }
         int nColumns = table.get(0).size();
         // Looping through rows
         for(Seq<String> row: table){
@@ -105,39 +106,29 @@ public class CsvJoin {
         return mergedList;
     }
 
-    /**
-     * Helper method used by main() that joins tables from "input1.csv" and "input2.csv" based
-     * on which directory, dir, they are in.
-     * Prints error if either tables are not rectangular or have no columns.
-     */
-
-    private static void CsvJoinHelper(String dir) throws IOException {
-    }
-
-    /**
-     * Helper method used by CsvJoinHelper() that prints out a table in a simplified CSV format.
-     * mergedTable is a table made from joining two input tables in CsvJoinHelper().
-     */
 
     private static void CsvFormatter(Seq<Seq<String>> mergedTable){
         for(Seq<String> row:mergedTable){
             String printString = "";
             for(String s:row){
-                        printString += s + ",";
+                printString += s + ",";
             }
             System.out.println(printString.substring(0,(printString.length()-1)));
         }
     }
 
 
-    public static void main(String[] args){
+    public static void
+    main(String[] args){
         try{
-            // TODO: Maybe put code in CsvJoinHelper in main since it is not directly
             // reading from main's inputs (input 1 and 2 are hard coded)
             // Maybe can configure main to take in the path of input 1 and 2
+            if (args.length != 2){
+                System.err.println("Error: must provide exactly two arguments");
+                System.exit(-1);
+            }
             Seq<Seq<String>> left = csvToList(args[0]);
             Seq<Seq<String>> right = csvToList(args[1]);
-            //Seq<Seq<String>> right = csvToList("tests/testCsvToList/no-cols.csv");
             if (!checkRectangular(left) || !checkRectangular(right)) {
                 System.err.println("Error: Input tables are not rectangular or have no columns");
                 System.exit(-1);
